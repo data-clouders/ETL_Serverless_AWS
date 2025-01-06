@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: lambdas.
+
+Resources:
+  LambdaFunction1:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: Extract_API_COVID_USA
+      Runtime: python3.9
+      Handler: lambda_function.lambda_handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Code:
+        ZipFile: !Join ["\n", [!Sub "file://lambda_function.py"]]
+
+  LambdaFunction2:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: Extract_API_COVID_COL
+      Runtime: python3.9
+      Handler: lambda_function.lambda_handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Code:
+        ZipFile: |
+          def lambda_handler(event, context):
+              print("Hello from Lambda 2!")

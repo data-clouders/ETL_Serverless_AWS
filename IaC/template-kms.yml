@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: iam roles.
+
+Resources:
+  S3KMSKey:
+    Type: AWS::KMS::Key
+    Properties:
+      Description: Key para encriptar objetos en el bucket S3
+      EnableKeyRotation: true
+      KeyPolicy:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
+            Action: kms:*
+            Resource: "*"
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - kms:Decrypt
+              - kms:Encrypt
+              - kms:GenerateDataKey
+              - kms:DescribeKey
+            Resource:
+              - !Sub arn:aws:s3:::s3_raw_data
