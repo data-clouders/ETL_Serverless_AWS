@@ -10,7 +10,10 @@ Resources:
       Handler: lambda_function.lambda_handler
       Role: !GetAtt LambdaExecutionRole.Arn
       Code:
-        ZipFile: !Join ["\n", [!Sub "file://lambda_function.py"]]
+        S3Bucket: s3_lambda_code
+        S3Key: lambda_function_COL.zip
+      Timeout: 120
+      MemorySize: 128
 
   LambdaFunction2:
     Type: AWS::Lambda::Function
@@ -20,6 +23,7 @@ Resources:
       Handler: lambda_function.lambda_handler
       Role: !GetAtt LambdaExecutionRole.Arn
       Code:
-        ZipFile: |
-          def lambda_handler(event, context):
-              print("Hello from Lambda 2!")
+        S3Bucket: s3_lambda_code
+        S3Key: lambda_function_USA.zip
+      Timeout: 120
+      MemorySize: 128

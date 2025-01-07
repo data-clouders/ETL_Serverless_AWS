@@ -26,3 +26,13 @@ Resources:
               - kms:DescribeKey
             Resource:
               - !Sub arn:aws:s3:::s3_raw_data
+
+Outputs:
+  kmss3:
+      Value: !Ref S3KMSKey
+      Export:
+        Name: kmss3
+  kmsarn:
+      Value: !GetAtt S3KMSKey.Arn
+      Export:
+        Name: kmsarn

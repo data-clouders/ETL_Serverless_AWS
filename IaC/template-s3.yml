@@ -1,11 +1,25 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: iam roles.
 
+Parameters:
+    S3KMSKey:
+        Type: String
+        
 Resources:
   S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: s3_raw_data
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: aws:kms
+              KMSMasterKeyID: !Ref S3KMSKey
+
+  S3Bucketlambda:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: s3_lambda_code
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
