@@ -12,9 +12,9 @@ Resources:
       FunctionName: Extract_API_COVID_USA
       Runtime: python3.9
       Handler: lambda_function.lambda_handler
-      Role: !GetAtt LambdaExecutionRole.Arn
+      Role: !Ref LambdaExecutionRole
       Code:
-        S3Bucket: s3_lambda_code
+        S3Bucket: awdataclouders-s3-lambda-code
         S3Key: lambda_function_COL.zip
       Timeout: 120
       MemorySize: 128
@@ -25,9 +25,9 @@ Resources:
       FunctionName: Extract_API_COVID_COL
       Runtime: python3.9
       Handler: lambda_function.lambda_handler
-      Role: !GetAtt LambdaExecutionRole.Arn
+      Role: !Ref LambdaExecutionRole
       Code:
-        S3Bucket: s3_lambda_code
+        S3Bucket: awdataclouders-s3-lambda-code
         S3Key: lambda_function_USA.zip
       Timeout: 120
       MemorySize: 128

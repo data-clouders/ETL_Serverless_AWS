@@ -5,17 +5,21 @@ Resources:
   S3KMSKey:
     Type: AWS::KMS::Key
     Properties:
-      Description: Key para encriptar objetos en el bucket S3
-      EnableKeyRotation: true
-      KeyPolicy:
-        Version: '2012-10-17'
+      Enabled: true
+      EnableKeyRotation: false
+      KeyPolicy: 
+        Version: "2012-10-17"
+        Id: politicas-llave
         Statement:
-          - Effect: Allow
-            Principal:
-              AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
-            Action: kms:*
-            Resource: "*"
-          - Effect: Allow
+          - Sid: Habilitar uso de KMS
+            Effect: Allow
+            Principal: 
+              AWS: !Join ["",["arn:aws:iam::", !Ref 'AWS::AccountId', ":root"]]
+            Action: 
+              - 'kms:*'
+            Resource: '*'
+          - Sid: Allow use of the key
+            Effect: Allow
             Principal:
               AWS: "*"
             Action:
@@ -23,9 +27,13 @@ Resources:
               - kms:Encrypt
               - kms:GenerateDataKey
               - kms:DescribeKey
-            Resource:
-              - !Sub arn:aws:s3:::s3_raw_data
-              - !Sub arn:aws:s3:::s3_lambda_code
+            Resource: "*"
+
+  MyKmsKeyAlias:
+    Type: AWS::KMS::Alias
+    Properties:
+      AliasName: !Sub "alias/my-key-alias-${AWS::StackName}"
+      TargetKeyId: !Ref S3KMSKey
 
 Outputs:
   kmss3:

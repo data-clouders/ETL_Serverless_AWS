@@ -9,7 +9,7 @@ Resources:
   S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: s3_raw_data
+      BucketName: awdataclouders-s3-data
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
@@ -19,7 +19,7 @@ Resources:
   S3Bucketlambda:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: s3_lambda_code
+      BucketName: awdataclouders-s3-lambda-code
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
@@ -28,6 +28,7 @@ Resources:
 
   SampleBucketPolicy:
     Type: AWS::S3::BucketPolicy
+    DependsOn: [S3Bucket]
     Properties:
       Bucket: !Ref S3Bucket
       PolicyDocument:
@@ -36,11 +37,15 @@ Resources:
           - Action: 
               - "s3:GetObject"
             Effect: "Allow"
-            Resource: !Sub "arn:aws:s3:::${S3Bucket}/*"
-            Principal: "*"
+            Resource: 
+              - !Sub "arn:aws:s3:::${S3Bucket}"
+              - !Sub "arn:aws:s3:::${S3Bucket}/*"
+            Principal:
+              Service: "glue.amazonaws.com"
 
   SampleBucketPolicy2:
     Type: AWS::S3::BucketPolicy
+    DependsOn: [S3Bucketlambda]
     Properties:
       Bucket: !Ref S3Bucketlambda
       PolicyDocument:
@@ -49,5 +54,8 @@ Resources:
           - Action: 
               - "s3:GetObject"
             Effect: "Allow"
-            Resource: !Sub "arn:aws:s3:::${S3Bucketlambda}/*"
-            Principal: "*"
+            Resource: 
+              - !Sub "arn:aws:s3:::${S3Bucketlambda}"
+              - !Sub "arn:aws:s3:::${S3Bucketlambda}/*"
+            Principal: 
+              Service: "lambda.amazonaws.com"
