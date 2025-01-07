@@ -1,6 +1,10 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: lambdas.
 
+Parameters:
+    LambdaExecutionRole:
+        Type: String
+
 Resources:
   LambdaFunction1:
     Type: AWS::Lambda::Function

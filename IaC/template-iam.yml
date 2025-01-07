@@ -29,7 +29,8 @@ Resources:
                     - s3:GetObject
                     - s3:PutObject
                   Resource:
-                    - !Sub arn:aws:s3:::s3_raw_data
+                    - !Sub "arn:aws:s3:::s3_raw_data/*"
+                    - !Sub "arn:aws:s3:::s3_lambda_code/*"
                 - Effect: Allow
                   Action:
                     - kms:Decrypt
@@ -37,3 +38,13 @@ Resources:
                     - kms:GenerateDataKey
                   Resource:
                     - !Ref S3KMSKey 
+
+Outputs:
+  LambdaExecutionRole:
+      Value: !Ref LambdaExecutionRole
+      Export:
+        Name: LambdaExecutionRole
+  LambdaExecutionRolearn:
+      Value: !GetAtt LambdaExecutionRole.Arn
+      Export:
+        Name: LambdaExecutionRolearn

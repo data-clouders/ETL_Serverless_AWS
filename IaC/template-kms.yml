@@ -25,6 +25,7 @@ Resources:
               - kms:DescribeKey
             Resource:
               - !Sub arn:aws:s3:::s3_raw_data
+              - !Sub arn:aws:s3:::s3_lambda_code
 
 Outputs:
   kmss3:
