@@ -29,6 +29,8 @@ Resources:
         DependsOn: iam
         Properties:
             TemplateURL: https://infra-poc1-etl-serverless.s3.us-east-1.amazonaws.com/template-lambdas.yaml
+            Parameters:
+                LambdaExecutionRole: !GetAtt iam.Outputs.LambdaExecutionRolearn  
     
 
 
