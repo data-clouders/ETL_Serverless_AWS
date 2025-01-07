@@ -1,9 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Parameters:
-    S3KMSKey:
-        Description: Nombre
-        Type: String
-     
+
 Resources:
 
     kms:
