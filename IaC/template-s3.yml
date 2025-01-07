@@ -4,7 +4,7 @@ Description: iam roles.
 Parameters:
     S3KMSKey:
         Type: String
-        
+
 Resources:
   S3Bucket:
     Type: AWS::S3::Bucket
@@ -25,3 +25,37 @@ Resources:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: aws:kms
               KMSMasterKeyID: !Ref S3KMSKey
+
+  SampleBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    DependsOn: [S3Bucket]
+    Properties:
+      Bucket: !Ref S3Bucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Action: 
+              - "s3:GetObject"
+            Effect: "Allow"
+            Resource: "arn:aws:s3:::kms/*"
+            Principal: "*"
+            Condition:
+              StringEquals:
+                "kms:ViaService": !Sub "s3.${AWS::Region}.amazonaws.com"
+
+  SampleBucketPolicy2:
+    Type: AWS::S3::BucketPolicy
+    DependsOn: [S3Bucketlambda]
+    Properties:
+      Bucket: !Ref S3Bucketlambda
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Action: 
+              - "s3:GetObject"
+            Effect: "Allow"
+            Resource: "arn:aws:s3:::kms/*"
+            Principal: "*"
+            Condition:
+              StringEquals:
+                "kms:ViaService": !Sub "s3.${AWS::Region}.amazonaws.com"

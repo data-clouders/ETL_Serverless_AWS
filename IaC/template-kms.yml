@@ -17,8 +17,7 @@ Resources:
             Resource: "*"
           - Effect: Allow
             Principal:
-              Service:
-                - lambda.amazonaws.com
+              AWS: "*"
             Action:
               - kms:Decrypt
               - kms:Encrypt
