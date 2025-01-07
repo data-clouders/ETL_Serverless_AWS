@@ -16,7 +16,9 @@ Resources:
 
     iam:
         Type: "AWS::CloudFormation::Stack"
-        DependsOn: kms,s3
+        DependsOn: 
+            - kms
+            - s3
         Properties:
             TemplateURL: https://infra-poc1-etl-serverless.s3.us-east-1.amazonaws.com/template-iam.yaml
             Parameters:
