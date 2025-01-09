@@ -9,7 +9,7 @@ Resources:
   S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: awdataclouders-s3-data
+      BucketName: awdataclouders-s3-data-2
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
@@ -19,7 +19,7 @@ Resources:
   S3Bucketlambda:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: awdataclouders-s3-lambda-code
+      BucketName: awdataclouders-s3-lambda-code-2
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
