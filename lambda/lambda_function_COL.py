@@ -2,13 +2,11 @@ import json
 import boto3
 import urllib3
 from datetime import datetime
+import os
 
 # Initialize S3 client
 s3 = boto3.client('s3')
-
-# Replace with your S3 bucket name
-S3_BUCKET_NAME = 's3_raw_data'
-S3_FOLDER_NAME = "COL/"
+bucket_destiny = os.getenv('S3_BUCKET_NAME','prueba')
 
 def lambda_handler(event, context):
     # API URL
@@ -31,8 +29,8 @@ def lambda_handler(event, context):
             
             # Save data to S3
             s3.put_object(
-                Bucket=S3_BUCKET_NAME,
-                Key=f"{S3_FOLDER_NAME}{file_name}",
+                Bucket=bucket_destiny,
+                Key=file_name,
                 Body=json.dumps(data),
                 ContentType='application/json'
             )

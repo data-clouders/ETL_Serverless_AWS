@@ -10,6 +10,10 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: Extract_API_COVID_USA
+      Environment:
+        Variables:
+          S3_BUCKET_NAME: awdataclouders-s3-data/
+          S3_FOLDER_NAME: Raw/Usa/
       Runtime: python3.9
       Handler: lambda_function.lambda_handler
       Role: !Ref LambdaExecutionRole
@@ -23,6 +27,10 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: Extract_API_COVID_COL
+      Environment:
+        Variables:
+          S3_BUCKET_NAME: awdataclouders-s3-data/
+          S3_FOLDER_NAME: Raw/Col/
       Runtime: python3.9
       Handler: lambda_function.lambda_handler
       Role: !Ref LambdaExecutionRole
