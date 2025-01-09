@@ -12,13 +12,12 @@ Resources:
       FunctionName: Extract_API_COVID_USA
       Environment:
         Variables:
-          S3_BUCKET_NAME: awdataclouders-s3-data/
-          S3_FOLDER_NAME: Raw/Usa/
+          S3_BUCKET_NAME: awdataclouders-s3-data-2/Raw/Usa/
       Runtime: python3.9
       Handler: lambda_function.lambda_handler
       Role: !Ref LambdaExecutionRole
       Code:
-        S3Bucket: awdataclouders-s3-lambda-code
+        S3Bucket: awdataclouders-s3-lambda-code-2
         S3Key: lambda_function_COL.zip
       Timeout: 120
       MemorySize: 128
@@ -29,13 +28,12 @@ Resources:
       FunctionName: Extract_API_COVID_COL
       Environment:
         Variables:
-          S3_BUCKET_NAME: awdataclouders-s3-data/
-          S3_FOLDER_NAME: Raw/Col/
+          S3_BUCKET_NAME: awdataclouders-s3-data-2/Raw/Col/
       Runtime: python3.9
       Handler: lambda_function.lambda_handler
       Role: !Ref LambdaExecutionRole
       Code:
-        S3Bucket: awdataclouders-s3-lambda-code
+        S3Bucket: awdataclouders-s3-lambda-code-2
         S3Key: lambda_function_USA.zip
       Timeout: 120
       MemorySize: 128

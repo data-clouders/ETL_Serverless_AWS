@@ -29,8 +29,8 @@ Resources:
                     - s3:GetObject
                     - s3:PutObject
                   Resource:
-                    - !Sub "arn:aws:s3:::s3_raw_data/*"
-                    - !Sub "arn:aws:s3:::s3_lambda_code/*"
+                    - !Sub "arn:aws:s3:::awdataclouders-s3-data-2/*"
+                    - !Sub "arn:aws:s3:::awdataclouders-s3-lambda-code-2/*"
                 - Effect: Allow
                   Action:
                     - kms:Decrypt
