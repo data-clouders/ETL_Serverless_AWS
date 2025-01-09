@@ -4,7 +4,7 @@ Description: iam roles.
 Parameters:
     S3KMSKey:
         Type: String
-    Bucketdata:
+    Bucketdataconsume:
         Type: String
 
 Resources:
@@ -75,8 +75,8 @@ Resources:
                   - s3:DeleteObject
                   - s3:DeleteObjectVersion
                 Resource: 
-                  - !Ref Bucketdata
-                  - !Join [ "", [Bucketdata, "/*"] ]
+                  - !Ref Bucketdataconsume
+                  - !Join [ "", [Bucketdataconsume, "/*"] ]
         - PolicyName: glue
           PolicyDocument:
             Version: "2012-10-17"
