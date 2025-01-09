@@ -6,26 +6,26 @@ Parameters:
         Type: String
 
 Resources:
-rGlueJobTransforma:
-    Type: AWS::Glue::Job
-    Properties:
-      Command:
-        Name: gluetransform
-        PythonVersion: 3
-        ScriptLocation: "s3://awdataclouders-s3-glue-code-2/transform.py"
-      DefaultArguments: {
-        "--job-language": "python",
-        "--job-bookmark-option": "job-bookmark-enable",
-        "--spark-event-logs-path": "s3://awdataclouders-s3-glue-code-2/",
-        "--enable-spark-ui": "true",
-        "--enable-glue-datacatalog": "",
-        "--enable-metrics": ""
-        }
-      ExecutionProperty:
-        MaxConcurrentRuns: 2
-      MaxRetries: 1
-      Name: GlueTransform
-      Role: !Ref roleglue
-      GlueVersion: 3.0
-      WorkerType: Standard
-      NumberOfWorkers: 1
+  rGlueJobTransforma:
+      Type: AWS::Glue::Job
+      Properties:
+        Command:
+          Name: gluetransform
+          PythonVersion: 3
+          ScriptLocation: "s3://awdataclouders-s3-glue-code-2/transform.py"
+        DefaultArguments: {
+          "--job-language": "python",
+          "--job-bookmark-option": "job-bookmark-enable",
+          "--spark-event-logs-path": "s3://awdataclouders-s3-glue-code-2/",
+          "--enable-spark-ui": "true",
+          "--enable-glue-datacatalog": "",
+          "--enable-metrics": ""
+          }
+        ExecutionProperty:
+          MaxConcurrentRuns: 2
+        MaxRetries: 1
+        Name: GlueTransform
+        Role: !Ref roleglue
+        GlueVersion: 3.0
+        WorkerType: Standard
+        NumberOfWorkers: 1
