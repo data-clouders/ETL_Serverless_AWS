@@ -89,6 +89,6 @@ Resources:
 
 Outputs:
   Bucketdata:
-      Value: !GetAtt S3Bucket.Arn
+      Value: !Sub "arn:aws:s3:::${S3Bucketglue}"
       Export:
         Name: Bucketdata
