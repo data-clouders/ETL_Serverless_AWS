@@ -24,7 +24,7 @@ Resources:
             TemplateURL: https://aw1289001-public-bucket.s3.us-east-1.amazonaws.com/template-iam.yml
             Parameters:
                 S3KMSKey: !GetAtt kms.Outputs.kmsarn
-                Bucketdata: !GetAtt s3.Outputs.Bucketdata
+                Bucketdataconsume: !GetAtt s3.Outputs.Bucketdata
 
     lambdas:
         Type: "AWS::CloudFormation::Stack"
