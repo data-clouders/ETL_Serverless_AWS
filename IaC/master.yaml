@@ -26,13 +26,13 @@ Resources:
                 S3KMSKey: !GetAtt kms.Outputs.kmsarn
                 Bucketdataconsume: !GetAtt s3.Outputs.Bucketdata
 
-    #lambdas:
-        #Type: "AWS::CloudFormation::Stack"
-        #DependsOn: iam
-        #Properties:
-            #TemplateURL: https://aw1289001-public-bucket.s3.us-east-1.amazonaws.com/template-lambdas.yml
-            #Parameters:
-                #LambdaExecutionRole: !GetAtt iam.Outputs.LambdaExecutionRolearn
+    lambdas:
+        Type: "AWS::CloudFormation::Stack"
+        DependsOn: iam
+        Properties:
+            TemplateURL: https://aw1289001-public-bucket.s3.us-east-1.amazonaws.com/template-lambdas.yml
+            Parameters:
+                LambdaExecutionRole: !GetAtt iam.Outputs.LambdaExecutionRolearn
 
     glue:
         Type: "AWS::CloudFormation::Stack"
