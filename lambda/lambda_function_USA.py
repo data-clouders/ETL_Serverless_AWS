@@ -6,7 +6,8 @@ import os
 
 # Initialize S3 client
 s3 = boto3.client('s3')
-bucket_destiny = os.getenv('S3_BUCKET_NAME','prueba')
+bucket_name = os.getenv('S3_BUCKET_NAME','prueba')
+bucket_path = os.getenv('S3_BUCKET_PATH','prueba')
 
 def lambda_handler(event, context):
     # API URL
@@ -29,7 +30,7 @@ def lambda_handler(event, context):
             
             # Save data to S3
             s3.put_object(
-                Bucket=bucket_destiny,
+                Bucket=f"{bucket_name}{bucket_path}",
                 Key=file_name,
                 Body=json.dumps(data),
                 ContentType='application/json'

@@ -12,7 +12,8 @@ Resources:
       FunctionName: Extract_API_COVID_USA
       Environment:
         Variables:
-          S3_BUCKET_NAME: arn:aws:s3:::awdataclouders-s3-data-2/Raw/Usa/
+          S3_BUCKET_NAME: awdataclouders-s3-data-2
+          S3_BUCKET_PATH: /Raw/Usa/
       Runtime: python3.9
       Handler: lambda_function_COL.lambda_handler
       Role: !Ref LambdaExecutionRole
@@ -28,7 +29,8 @@ Resources:
       FunctionName: Extract_API_COVID_COL
       Environment:
         Variables:
-          S3_BUCKET_NAME: arn:aws:s3:::awdataclouders-s3-data-2/Raw/Col/
+          S3_BUCKET_NAME: awdataclouders-s3-data-2
+          S3_BUCKET_PATH: /Raw/Col/
       Runtime: python3.9
       Handler: lambda_function_USA.lambda_handler
       Role: !Ref LambdaExecutionRole
