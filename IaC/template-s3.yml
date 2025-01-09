@@ -26,6 +26,16 @@ Resources:
               SSEAlgorithm: aws:kms
               KMSMasterKeyID: !Ref S3KMSKey
 
+  S3Bucketglue:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: awdataclouders-s3-glue-code-2
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: aws:kms
+              KMSMasterKeyID: !Ref S3KMSKey
+
   SampleBucketPolicy:
     Type: AWS::S3::BucketPolicy
     DependsOn: [S3Bucket]
@@ -59,3 +69,26 @@ Resources:
               - !Sub "arn:aws:s3:::${S3Bucketlambda}/*"
             Principal: 
               Service: "lambda.amazonaws.com"
+
+  SampleBucketPolicy3:
+    Type: AWS::S3::BucketPolicy
+    DependsOn: [S3Bucketglue]
+    Properties:
+      Bucket: !Ref S3Bucketglue
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Action: 
+              - "s3:GetObject"
+            Effect: "Allow"
+            Resource: 
+              - !Sub "arn:aws:s3:::${S3Bucketglue}"
+              - !Sub "arn:aws:s3:::${S3Bucketglue}/*"
+            Principal:
+              Service: "glue.amazonaws.com"
+
+Outputs:
+  Bucketdata:
+      Value: !GetAtt S3Bucket.Arn
+      Export:
+        Name: Bucketdata

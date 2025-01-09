@@ -4,6 +4,8 @@ Description: iam roles.
 Parameters:
     S3KMSKey:
         Type: String
+    Bucketdata:
+        Type: String
 
 Resources:
   LambdaExecutionRole:
@@ -39,6 +41,110 @@ Resources:
                   Resource:
                     - !Ref S3KMSKey 
 
+  glueRole: 
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - glue.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Description: Glue
+      Path: /
+      Policies: 
+        - PolicyName: s3
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: 
+                  - s3:ListBucket
+                  - s3:GetBucketLocation
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:GetObjectVersion
+                  - s3:GetObjectACL
+                  - s3:PutObjectACL
+                  - s3:GetObjectMetaData
+                  - s3:ListMultipartUploadParts
+                  - s3:AbortMultipartUpload
+                  - s3:DeleteObject
+                  - s3:DeleteObjectVersion
+                Resource: 
+                  - !Ref Bucketdata
+                  - !Join [ "", [Bucketdata, "/*"] ]
+        - PolicyName: glue
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: 
+                  - glue:CreateDatabase
+                  - glue:GetPartitions
+                  - glue:CreateTable
+                  - glue:GetTables
+                  - glue:GetDatabase
+                  - glue:GetDatabases
+                  - glue:GetSchema
+                  - glue:GetTable
+                  - glue:GetUserDefinedFunctions
+                  - glue:UpdateTable
+                  - glue:UpdateDatabases
+                  - glue:DeleteTable
+                Resource: 
+                  - !Sub arn:${AWS::Partition}:glue:*:*:table/*/*
+                  - !Sub arn:${AWS::Partition}:glue:*:*:database/*
+                  - !Sub arn:${AWS::Partition}:glue:*:*:catalog
+        - PolicyName: athena
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: 
+                  - athena:BatchGetQueryExecution
+                  - athena:GetQueryExecution
+                  - athena:GetQueryResults
+                  - athena:GetQueryResultsStream
+                  - athena:ListQueryExecutions
+                  - athena:StartQueryExecution
+                  - athena:StopQueryExecution
+                  - athena:ListWorkGroups
+                  - athena:ListEngineVersions
+                  - athena:GetWorkGroup
+                  - athena:GetDataCatalog
+                  - athena:GetDatabase
+                  - athena:GetTableMetadata
+                  - athena:ListDataCatalogs
+                  - athena:ListDatabases
+                  - athena:ListTableMetadata
+                Resource: 
+                  - !Sub arn:${AWS::Partition}:athena:${AWS::Region}:${AWS::AccountId}:workgroup/*
+                  - !Sub arn:${AWS::Partition}:athena:${AWS::Region}:${AWS::AccountId}:datacatalog/*
+        - PolicyName: logs
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: 
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: 
+                  - !Sub arn:${AWS::Partition}:logs:*:*:/aws-glue/*
+        - PolicyName: CloudWatchMetricData
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - cloudwatch:PutMetricData 
+                Resource: '*'
+      RoleName: Gluepoc1
+
 Outputs:
   LambdaExecutionRole:
       Value: !Ref LambdaExecutionRole
@@ -48,3 +154,12 @@ Outputs:
       Value: !GetAtt LambdaExecutionRole.Arn
       Export:
         Name: LambdaExecutionRolearn
+  glueExecutionRole:
+      Value: !Ref glueRole
+      Export:
+        Name: glueExecutionRole
+  glueExecutionRolearn:
+      Value: !GetAtt glueRole.Arn
+      Export:
+        Name: glueExecutionRolearn
+  
