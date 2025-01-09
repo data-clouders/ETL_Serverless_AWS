@@ -13,7 +13,7 @@ Resources:
       Environment:
         Variables:
           S3_BUCKET_NAME: awdataclouders-s3-data-2
-          S3_BUCKET_PATH: /Raw/Usa/
+          S3_BUCKET_PATH: Raw/Usa/
       Runtime: python3.9
       Handler: lambda_function_COL.lambda_handler
       Role: !Ref LambdaExecutionRole
@@ -30,7 +30,7 @@ Resources:
       Environment:
         Variables:
           S3_BUCKET_NAME: awdataclouders-s3-data-2
-          S3_BUCKET_PATH: /Raw/Col/
+          S3_BUCKET_PATH: Raw/Col/
       Runtime: python3.9
       Handler: lambda_function_USA.lambda_handler
       Role: !Ref LambdaExecutionRole

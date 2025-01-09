@@ -30,8 +30,8 @@ def lambda_handler(event, context):
             
             # Save data to S3
             s3.put_object(
-                Bucket=f"{bucket_name}{bucket_path}",
-                Key=file_name,
+                Bucket=f"{bucket_name}",
+                Key=f"{bucket_path}{file_name}",
                 Body=json.dumps(data),
                 ContentType='application/json'
             )
