@@ -89,6 +89,6 @@ Resources:
 
 Outputs:
   Bucketdata:
-      Value: !Sub "arn:aws:s3:::${S3Bucketglue}"
+      Value: !Sub "arn:aws:s3:::${S3Bucketglue}/*"
       Export:
         Name: Bucketdata
