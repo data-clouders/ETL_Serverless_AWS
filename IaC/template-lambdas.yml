@@ -15,7 +15,7 @@ Resources:
           S3_BUCKET_NAME: awdataclouders-s3-data-2
           S3_BUCKET_PATH: Raw/Usa/
       Runtime: python3.9
-      Handler: lambda_function_COL.lambda_handler
+      Handler: lambda_function_USA.lambda_handler
       Role: !Ref LambdaExecutionRole
       Code:
         S3Bucket: awdataclouders-s3-lambda-code-2
@@ -36,6 +36,6 @@ Resources:
       Role: !Ref LambdaExecutionRole
       Code:
         S3Bucket: awdataclouders-s3-lambda-code-2
-        S3Key: lambda_function_USA.zip
+        S3Key: lambda_function_COL.zip
       Timeout: 120
       MemorySize: 128
