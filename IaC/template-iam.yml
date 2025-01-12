@@ -165,19 +165,19 @@ Resources:
                 Action:
                   - "lambda:InvokeFunction"
                 Resource:
-                  - arn:aws:lambda:us-east-1:135808920063:function:Extract_API_COVID_COL
-                  - arn:aws:lambda:us-east-1:135808920063:function:Extract_API_COVID_USA
+                  - !Sub arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:Extract_API_COVID_COL
+                  - !Sub arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:Extract_API_COVID_USA
               - Effect: Allow
                 Action:
                   - "glue:StartJobRun"
                 Resource:
-                  - arn:aws:glue:us-east-1:135808920063:job/GlueTransform
+                  - !Sub arn:${AWS::Partition}:glue:${AWS::Region}:${AWS::AccountId}:job/GlueTransform
               - Effect: Allow
                 Action:
                   - "glue:GetJobRun"
                   - "glue:GetJobRuns"
                 Resource:
-                  - arn:aws:glue:us-east-1:135808920063:job/GlueTransform
+                  - !Sub arn:${AWS::Partition}:glue:${AWS::Region}:${AWS::AccountId}:job/GlueTransform
 
 
 Outputs:

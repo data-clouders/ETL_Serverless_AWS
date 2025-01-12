@@ -48,6 +48,14 @@ Resources:
               "Parameters": {
                 "JobName": "GlueTransform"
               },
+              "Next": "GlueStartJobRunQuality"
+            },
+            "GlueStartJobRunQuality": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::glue:startJobRun.sync",
+              "Parameters": {
+                "JobName": "GlueQuality"
+              },
               "End": true
             }
           }
