@@ -145,6 +145,41 @@ Resources:
                 Resource: '*'
       RoleName: Gluepoc1
 
+  MyStepFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: MyStepFunctionRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: "states.amazonaws.com"
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: MyStepFunctionPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "lambda:InvokeFunction"
+                Resource:
+                  - arn:aws:lambda:us-east-1:135808920063:function:Extract_API_COVID_COL
+                  - arn:aws:lambda:us-east-1:135808920063:function:Extract_API_COVID_USA
+              - Effect: Allow
+                Action:
+                  - "glue:StartJobRun"
+                Resource:
+                  - arn:aws:glue:us-east-1:135808920063:job/GlueTransform
+              - Effect: Allow
+                Action:
+                  - "glue:GetJobRun"
+                  - "glue:GetJobRuns"
+                Resource:
+                  - arn:aws:glue:us-east-1:135808920063:job/GlueTransform
+
+
 Outputs:
   LambdaExecutionRole:
       Value: !Ref LambdaExecutionRole
@@ -162,4 +197,12 @@ Outputs:
       Value: !GetAtt glueRole.Arn
       Export:
         Name: glueExecutionRolearn
+  stepExecutionRole:
+      Value: !Ref MyStepFunctionRole
+      Export:
+        Name: stepExecutionRole
+  stepExecutionRolearn:
+      Value: !GetAtt MyStepFunctionRole.Arn
+      Export:
+        Name: stepExecutionRolearn
   

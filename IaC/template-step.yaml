@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Step function.
+
+Parameters:
+    StepExecutionRole:
+        Type: String
+
+Resources:
+  MyStepFunction:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      StateMachineName: StepFunctionETLServerless
+      RoleArn: !Ref StepExecutionRole
+      DefinitionString: |
+        {
+          "Comment": "Parallel execution of two Lambda functions followed by a Glue job",
+          "StartAt": "Parallel",
+          "States": {
+            "Parallel": {
+              "Type": "Parallel",
+              "Branches": [
+                {
+                  "StartAt": "LambdaInvokeUSA",
+                  "States": {
+                    "LambdaInvokeUSA": {
+                      "Type": "Task",
+                      "Resource": "arn:aws:lambda:us-east-1:135808920063:function:Extract_API_COVID_USA",
+                      "End": true
+                    }
+                  }
+                },
+                {
+                  "StartAt": "LambdaInvokeCOL",
+                  "States": {
+                    "LambdaInvokeCOL": {
+                      "Type": "Task",
+                      "Resource": "arn:aws:lambda:us-east-1:135808920063:function:Extract_API_COVID_COL",
+                      "End": true
+                    }
+                  }
+                }
+              ],
+              "Next": "GlueStartJobRun"
+            },
+            "GlueStartJobRun": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::glue:startJobRun.sync",
+              "Parameters": {
+                "JobName": "GlueTransform"
+              },
+              "End": true
+            }
+          }
+        }
