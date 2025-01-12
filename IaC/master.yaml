@@ -53,6 +53,6 @@ Resources:
         Properties:
             TemplateURL: https://aw1289001-public-bucket.s3.us-east-1.amazonaws.com/template-step.yaml
             Parameters:
-                roleglue: !GetAtt iam.Outputs.stepExecutionRolearn
+                StepExecutionRole: !GetAtt iam.Outputs.stepExecutionRolearn
 
 
