@@ -145,7 +145,7 @@ Resources:
                 Resource: '*'
       RoleName: Gluepoc1
 
-  MyStepFunctionRole:
+  StepFunctionRole:
     Type: AWS::IAM::Role
     Properties:
       RoleName: MyStepFunctionRole
@@ -198,11 +198,11 @@ Outputs:
       Export:
         Name: glueExecutionRolearn
   stepExecutionRole:
-      Value: !Ref MyStepFunctionRole
+      Value: !Ref StepFunctionRole
       Export:
         Name: stepExecutionRole
   stepExecutionRolearn:
-      Value: !GetAtt MyStepFunctionRole.Arn
+      Value: !GetAtt StepFunctionRole.Arn
       Export:
         Name: stepExecutionRolearn
   
