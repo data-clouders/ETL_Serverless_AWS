@@ -172,12 +172,14 @@ Resources:
                   - "glue:StartJobRun"
                 Resource:
                   - !Sub arn:${AWS::Partition}:glue:${AWS::Region}:${AWS::AccountId}:job/GlueTransform
+                  - !Sub arn:${AWS::Partition}:glue:${AWS::Region}:${AWS::AccountId}:job/GlueQuality
               - Effect: Allow
                 Action:
                   - "glue:GetJobRun"
                   - "glue:GetJobRuns"
                 Resource:
                   - !Sub arn:${AWS::Partition}:glue:${AWS::Region}:${AWS::AccountId}:job/GlueTransform
+                  - !Sub arn:${AWS::Partition}:glue:${AWS::Region}:${AWS::AccountId}:job/GlueQuality
 
 
 Outputs:
