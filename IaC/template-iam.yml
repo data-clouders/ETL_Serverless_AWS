@@ -181,6 +181,24 @@ Resources:
                   - !Sub arn:${AWS::Partition}:glue:${AWS::Region}:${AWS::AccountId}:job/GlueTransform
                   - !Sub arn:${AWS::Partition}:glue:${AWS::Region}:${AWS::AccountId}:job/GlueQuality
 
+  EventBridgeRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: "events.amazonaws.com"
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: AllowStepFunctionExecution
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: "states:StartExecution"
+                Resource: !GetAtt MyStepFunction.Arn
 
 Outputs:
   LambdaExecutionRole:
@@ -207,4 +225,8 @@ Outputs:
       Value: !GetAtt StepFunctionRole.Arn
       Export:
         Name: stepExecutionRolearn
+  EventBridgeRoleOutput:
+    Value: !GetAtt EventBridgeRole.Arn
+      Export:
+        Name: EventBridgeRoleOutput
   

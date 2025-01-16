@@ -60,3 +60,8 @@ Resources:
             }
           }
         }
+
+  ArnStepFunction:
+    Value: !GetAtt MyStepFunction.Arn
+      Export:
+        Name: ArnStepFunction
