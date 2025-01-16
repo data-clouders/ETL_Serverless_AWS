@@ -226,8 +226,4 @@ Outputs:
   stepExecutionRolearn:
       Value: !GetAtt StepFunctionRole.Arn
       Export:
-        Name: stepExecutionRolearn
-  EventBridgeRolearn:
-      Value: !GetAtt EventBridgeRole.Arn
-      Export:
-        Name: EventBridgeRoleOutput     
+        Name: stepExecutionRolearn   
