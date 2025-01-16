@@ -65,7 +65,7 @@ Resources:
             TemplateURL: https://aw1289001-public-bucket.s3.us-east-1.amazonaws.com/template-eventbridge.yaml
             Parameters:
                 ArnStepFunction: !GetAtt step.Outputs.ArnStepFunction
-                RoleEvent: !GetAtt iam.Outputs.EventBridgeRoleOutput
+                RoleEvent: !GetAtt iam.Outputs.EventBridgeRolearn
 
 
 
