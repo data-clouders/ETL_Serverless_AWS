@@ -6,9 +6,7 @@ Parameters:
         Type: String
     Bucketdataconsume:
         Type: String
-    ArnStepFunction:
-        Type: String
-
+        
 Resources:
   LambdaExecutionRole:
       Type: AWS::IAM::Role
