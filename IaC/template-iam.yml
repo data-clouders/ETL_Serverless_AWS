@@ -231,4 +231,3 @@ Outputs:
       Value: !GetAtt EventBridgeRole.Arn
       Export:
         Name: EventBridgeRoleOutput
-  
