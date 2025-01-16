@@ -200,7 +200,7 @@ Resources:
             Statement:
               - Effect: Allow
                 Action: "states:StartExecution"
-                Resource: !Ref ArnStepFunction
+                Resource: "*"
 
 Outputs:
   LambdaExecutionRole:
@@ -226,4 +226,8 @@ Outputs:
   stepExecutionRolearn:
       Value: !GetAtt StepFunctionRole.Arn
       Export:
-        Name: stepExecutionRolearn   
+        Name: stepExecutionRolearn
+  EventBridgeRolearn:
+      Value: !GetAtt EventBridgeRole.Arn
+      Export:
+        Name: EventBridgeRoleOutput     
