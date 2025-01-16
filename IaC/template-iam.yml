@@ -6,6 +6,8 @@ Parameters:
         Type: String
     Bucketdataconsume:
         Type: String
+    ArnStepFunction:
+        Type: String
 
 Resources:
   LambdaExecutionRole:
@@ -198,7 +200,7 @@ Resources:
             Statement:
               - Effect: Allow
                 Action: "states:StartExecution"
-                Resource: !GetAtt MyStepFunction.Arn
+                Resource: !Ref ArnStepFunction
 
 Outputs:
   LambdaExecutionRole:
