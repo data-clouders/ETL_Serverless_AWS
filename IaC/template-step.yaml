@@ -64,5 +64,5 @@ Resources:
 Outputs:
   ArnStepFunction:
     Value: !GetAtt MyStepFunction.Arn
-      Export:
-        Name: ArnStepFunction
+    Export:
+      Name: ArnStepFunction
