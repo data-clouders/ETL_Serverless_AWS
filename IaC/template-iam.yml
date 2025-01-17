@@ -6,7 +6,7 @@ Parameters:
         Type: String
     Bucketdataconsume:
         Type: String
-        
+
 Resources:
   LambdaExecutionRole:
       Type: AWS::IAM::Role
@@ -189,7 +189,7 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              Service: "events.amazonaws.com"
+              Service: "scheduler.amazonaws.com"
             Action: "sts:AssumeRole"
       Policies:
         - PolicyName: AllowStepFunctionExecution
@@ -228,4 +228,4 @@ Outputs:
   EventBridgeRolearn:
       Value: !GetAtt EventBridgeRole.Arn
       Export:
-        Name: EventBridgeRoleOutput     
+        Name: EventBridgeRolearn     
