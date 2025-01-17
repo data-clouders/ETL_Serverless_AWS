@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     libmysqlclient-dev \
     build-essential \
-    && pip install --no-cache-dir mysqlclient
+    && pip install --no-cache-dir PyAthena[SQLAlchemy]
 
 # Set environment variables for the Superset database connection
 ENV SUPERSET_SECRET_KEY=mysecretkey
