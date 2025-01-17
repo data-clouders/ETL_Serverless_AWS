@@ -1,25 +1,8 @@
 version: "3.7"
 
 services:
-  superset:
-    image: apache/superset:latest
-    build:
-      context: .
-      dockerfile: Dockerfile.superset  # Use a custom Dockerfile
-    environment:
-      - SUPERSET_SECRET_KEY=mysecretkey
-      - SQLALCHEMY_DATABASE_URI=mysql://superset:superset_password@db:3306/superset_metadata
-    ports:
-      - "8088:8088"  # Expose Superset's web interface on port 8088
-    depends_on:
-      - db
-    volumes:
-      - ./superset_config.py:/app/pythonpath/superset_config.py  # Optional, to provide custom Superset config
-    restart: always
-    networks:
-      - superset_network
 
-  db:
+  mysql:
     image: mysql:8.0
     environment:
       - MYSQL_ROOT_PASSWORD=rootpassword
@@ -29,11 +12,35 @@ services:
     ports:
       - "3306:3306"  # Exposing MySQL's default port
     restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 5s
+    container_name: mysql
     networks:
-      - superset_network
+      - superset_net
 
+  superset:
+    image: apache/superset:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.superset
+    environment:
+      - SQLALCHEMY_DATABASE_URI=mysql://root:rootpassword@mysql:3306/superset_metadata
+    ports:
+      - "8088:8088"  # Expose Superset's web interface on port 8088
+    depends_on:
+      - mysql
+    volumes:
+      - ./superset_config.py:/app/pythonpath/superset_config.py
+      - ./entrypoint.sh:/entrypoint.sh  # Optional, to provide custom Superset config
+    restart: always
+    networks:
+      - superset_net
+    container_name: superset
 
 networks:
-  superset_network:
+  superset_net:
     driver: bridge
-
