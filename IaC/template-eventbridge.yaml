@@ -7,15 +7,15 @@ Parameters:
         Type: String
 
 Resources:
-  EventBridgeRule:
+  EventBridge:
     Type: 'AWS::Scheduler::Schedule'
     Properties:
       Name: DailyStepFunctionTrigger
       ScheduleExpression: "cron(0 7 * * ? *)" # Todos los días a las 7 AM UTC
       State: ENABLED
       Target:
-        - Arn: !Ref ArnStepFunction
-          Id: MyFirstEventBridgeRuleId
-          RoleArn: !Ref RoleEvent
+        Arn: !Ref ArnStepFunction
+        Id: MyFirstEventBridgeRuleId
+        RoleArn: !Ref RoleEvent
           
 
