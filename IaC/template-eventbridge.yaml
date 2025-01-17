@@ -8,7 +8,7 @@ Parameters:
 
 Resources:
   EventBridgeRule:
-    Type: AWS::Events::Rule
+    Type: 'AWS::Scheduler::Schedule'
     Properties:
       Name: DailyStepFunctionTrigger
       ScheduleExpression: "cron(0 7 * * ? *)" # Todos los días a las 7 AM UTC
