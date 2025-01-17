@@ -15,7 +15,6 @@ Resources:
       State: ENABLED
       Target:
         Arn: !Ref ArnStepFunction
-        Id: MyFirstEventBridgeRuleId
         RoleArn: !Ref RoleEvent
           
 
