@@ -15,8 +15,7 @@ Resources:
       State: ENABLED
       FlexibleTimeWindow: 
         MaximumWindowInMinutes: 1
-        Mode: OFF
-
+        Mode: "OFF"
       Target:
         Arn: !Ref ArnStepFunction
         RoleArn: !Ref RoleEvent
