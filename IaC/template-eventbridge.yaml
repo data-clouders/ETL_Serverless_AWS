@@ -14,7 +14,6 @@ Resources:
       ScheduleExpression: "cron(0 7 * * ? *)" # Todos los días a las 7 AM UTC
       State: ENABLED
       FlexibleTimeWindow: 
-        MaximumWindowInMinutes: 1
         Mode: "OFF"
       Target:
         Arn: !Ref ArnStepFunction
