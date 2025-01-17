@@ -20,7 +20,8 @@ RUN apt-get update && apt-get install -y \
     && pip install PyMySQL
 
 RUN pip install sqlalchemy pyathena pillow mysqlclient pymysql
-
+RUN python3 -c "import secrets; print(f'SECRET_KEY = \\\"{secrets.token_urlsafe(42)}\\\"')" > /app/pythonpath/superset_config.py && \
+    echo 'SQLALCHEMY_DATABASE_URI = "mysql://root:rootpassword@mysql:3306/superset_metadata"' >> /app/pythonpath/superset_config.py
 COPY entrypoint.sh /entrypoint.sh
 # Expose the port on which Superset will run
 EXPOSE 8088
