@@ -33,9 +33,6 @@ services:
       - "8088:8088"  # Expose Superset's web interface on port 8088
     depends_on:
       - mysql
-    volumes:
-      - ./superset_config.py:/app/pythonpath/superset_config.py
-      - ./entrypoint.sh:/entrypoint.sh  # Optional, to provide custom Superset config
     restart: always
     networks:
       - superset_net
