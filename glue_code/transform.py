@@ -9,7 +9,6 @@ import datetime
 
 args = getResolvedOptions(sys.argv,
                             ['JOB_NAME',
-                            'key',
                             'INPUT_BUCKET',
                             'OUTPUT_BUCKET'])
 
