@@ -1,68 +1,70 @@
 import sys
+from pyspark.context import SparkContext
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, to_date
+from datetime import datetime
+from pyspark.sql.utils import AnalysisException
+import sys
 from awsglue.transforms import *
 from awsglue.utils import getResolvedOptions
 from pyspark.context import SparkContext
 from awsglue.context import GlueContext
 from awsglue.job import Job
-from pyspark.sql.functions import col, to_date
-from datetime import datetime
 
-current_datetime = datetime.now()
-print(current_datetime)
-
-
+# Parse command-line arguments
 args = getResolvedOptions(sys.argv,
                             ['JOB_NAME',
-                            'INPUT_BUCKET',
-                            'OUTPUT_BUCKET'])
+                             'INPUT_BUCKET',
+                             'OUTPUT_BUCKET'])
 
-
+# Create a SparkContext and GlueContext
 sc = SparkContext()
 glueContext = GlueContext(sc)
 spark = glueContext.spark_session
+
+# Create a Glue Job instance
 job = Job(glueContext)
 job.init(args['JOB_NAME'], args)
 
+# Function to read JSON from S3 using PySpark
+def read_json_from_s3(spark, s3_path):
+    try:
+        # Read data from S3 and create a DataFrame
+        df = spark.read.json(s3_path)
+        count = df.count()
+        print(f"Number of records read from {s3_path}: {count}")
+        return df
+    except AnalysisException as e:
+        print(f"Error reading from {s3_path}: {str(e)}")
+        return None
 
-def read_json_from_s3(glue_context, s3_path):
-
-    dynamic_frame = glue_context.create_dynamic_frame.from_options(
-        connection_type="s3",
-        connection_options={"paths": [s3_path] },
-        format="json"
-    )
-    return dynamic_frame
-
-
-def validate_and_write_parquet(glue_context, dynamic_frame, output_s3_path):
+# Function to validate the DataFrame and write to Parquet
+def validate_and_write_parquet(df, output_s3_path):
+    if df is None or df.count() == 0:
+        print("DataFrame is empty. Skipping write operation.")
+        return
     
-    count = dynamic_frame.count()
-    if count == 0:
-        raise ValueError("El DynamicFrame no contiene datos. Validación fallida.")
-    
-    glue_context.write_dynamic_frame.from_options(
-        frame=dynamic_frame,
-        connection_type="s3",
-        connection_options={"path": output_s3_path},
-        format="parquet"
-    )
+    # Write the DataFrame to Parquet format
+    df.write.parquet(output_s3_path, mode="overwrite")
+    print(f"Data written to {output_s3_path}")
 
-
+# Main logic
 def main():
-    timestamp = datetime.now().strftime('%Y-%m-%d')    
-    input_bucket_s3_usa = f"{args['INPUT_BUCKET']}Usa/datos_response_{timestamp}.json"
-    input_bucket_s3_col = f"{args['INPUT_BUCKET']}Col/datos_response_{timestamp}.json"
-
-    output_bucket_s3_usa = f"{args['OUTPUT_BUCKET']}Usa/"
-    output_bucket_s3_col = f"{args['OUTPUT_BUCKET']}Col/"
+    # Generate timestamp to be used in S3 paths
+    timestamp = datetime.now().strftime('%Y-%m-%d')
     
-    dynamic_frame_raw_usa = read_json_from_s3(glue_context, input_bucket_s3_usa)
-    dynamic_frame_raw_col = read_json_from_s3(glue_context, input_bucket_s3_col)
+    # Construct S3 paths for input and output data
+    input_s3_usa = f"{args['INPUT_BUCKET']}Usa/datos_response_{timestamp}.json"
+    input_s3_col = f"{args['INPUT_BUCKET']}Col/datos_response_{timestamp}.json"
+    output_s3_usa = f"{args['OUTPUT_BUCKET']}Usa/"
+    output_s3_col = f"{args['OUTPUT_BUCKET']}Col/"
     
-    validate_and_write_parquet(glue_context, dynamic_frame_raw_usa, output_bucket_s3_usa)
-    validate_and_write_parquet(glue_context, dynamic_frame_raw_col, output_bucket_s3_col)
-    job.commit()
+    # Read data from S3 for USA and Colombia
+    df_usa = read_json_from_s3(spark, input_s3_usa)
+    df_col = read_json_from_s3(spark, input_s3_col)
 
+    print(df_usa)
 
 if __name__ == "__main__":
     main()
+
