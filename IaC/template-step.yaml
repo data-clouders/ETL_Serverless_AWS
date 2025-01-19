@@ -48,7 +48,7 @@ Resources:
               "Parameters": {
                 "JobName": "GlueTransform",
                 "Arguments": {
-                  "--key": "$$.State.Enter.Timestamp",
+                  "--key.$": "$$.State.Enter.Timestamp",
                   "--INPUT_BUCKET": "s3://awdataclouders-s3-data-2/Raw/",
                   "--OUTPUT_BUCKET": "s3://awdataclouders-s3-data-2/Results/"
                 }
