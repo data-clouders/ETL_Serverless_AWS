@@ -4,10 +4,13 @@ import urllib3
 from datetime import datetime
 import os
 
+
 # Initialize S3 client
 s3 = boto3.client('s3')
 bucket_name = os.getenv('S3_BUCKET_NAME','prueba')
 bucket_path = os.getenv('S3_BUCKET_PATH','prueba')
+
+
 def lambda_handler(event, context):
     # API URL
     url = "https://www.datos.gov.co/resource/gt2j-8ykr.json"
@@ -16,8 +19,6 @@ def lambda_handler(event, context):
     try:
         # Send GET request
         response = http.request('GET', url)
-
-        
         
         # Check for successful response
         if response.status == 200:
