@@ -40,7 +40,8 @@ Resources:
                   }
                 }
               ],
-              "Next": "GlueStartJobRun"
+              "Next": "GlueStartJobRun",
+              "ResultPath": "$.ParallelResult"
             },
             "GlueStartJobRun": {
               "Type": "Task",
