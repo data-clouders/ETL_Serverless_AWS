@@ -26,7 +26,6 @@ Resources:
         MaxRetries: 1
         Name: GlueTransform
         Role: !Ref roleglue
-        GlueVersion: 3.0
         WorkerType: Standard
         NumberOfWorkers: 1
 
@@ -50,6 +49,5 @@ Resources:
         MaxRetries: 1
         Name: GlueQuality
         Role: !Ref roleglue
-        GlueVersion: 3.0
         WorkerType: Standard
         NumberOfWorkers: 1
