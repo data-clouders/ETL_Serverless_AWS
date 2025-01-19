@@ -10,7 +10,7 @@ Resources:
       Type: AWS::Glue::Job
       Properties:
         Command:
-          Name: gluetransform
+          Name: glueetl
           PythonVersion: 3
           ScriptLocation: "s3://awdataclouders-s3-glue-code-2/transform.py"
         DefaultArguments: {
@@ -33,7 +33,7 @@ Resources:
       Type: AWS::Glue::Job
       Properties:
         Command:
-          Name: gluequality
+          Name: glueetl
           PythonVersion: 3
           ScriptLocation: "s3://awdataclouders-s3-glue-code-2/quality.py"
         DefaultArguments: {
