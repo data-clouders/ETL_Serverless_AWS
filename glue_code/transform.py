@@ -14,8 +14,8 @@ from awsglue.job import Job
 # Parse command-line arguments
 args = getResolvedOptions(sys.argv,
                             ['JOB_NAME',
-                             'INPUT_BUCKET',
-                             'OUTPUT_BUCKET'])
+                            'INPUT_BUCKET',
+                            'OUTPUT_BUCKET'])
 
 # Create a SparkContext and GlueContext
 sc = SparkContext()
@@ -41,30 +41,28 @@ def read_json_from_s3(spark, s3_path):
 # Function to validate the DataFrame and write to Parquet
 def validate_and_write_parquet(df, database_name, table_name, output_s3_path, spark):
 
+    # Check if the database exists using Spark SQL
+    databases = spark.sql("SHOW DATABASES")
     try:
-        # Check if the database exists using Spark SQL
-        databases = spark.sql("SHOW DATABASES")
-        try:
-            # If database doesn't exist, create it
-            print(f"Database {database_name} does not exist. Creating the database.")
-            spark.sql(f"CREATE DATABASE {database_name}")
-        except:
-            # Set the database to use
-            spark.sql(f"USE {database_name}")
+        # If database doesn't exist, create it
+        print(f"Database {database_name} does not exist. Creating the database.")
+        spark.sql(f"CREATE DATABASE {database_name}")
+    except:
+        # Set the database to use
+        spark.sql(f"USE {database_name}")
         
-        # Check if the table exists
-        try:
-            spark.table(table_name)
-            print(f"Table {table_name} exists. Overwriting the table.")
-            # If table exists, overwrite it
-            df.write.format("parquet").saveAsTable(table_name)
-        except AnalysisException:
-            print(f"Table {table_name} does not exist. Creating the table.")
-            # If table doesn't exist, create the table
-            df.write.format("parquet").mode("overwrite").saveAsTable(table_name)
+    # Check if the table exists
+    try:
+        spark.table(table_name)
+        print(f"Table {table_name} exists. Overwriting the table.")
+        # If table exists, overwrite it
+        df.write.format("parquet").mode("overwrite").saveAsTable(table_name)
+    except AnalysisException:
+        print(f"Table {table_name} does not exist. Creating the table.")
+        # If table doesn't exist, create the table
+        df.write.format("parquet").saveAsTable(table_name)
     
-    except Exception as e:
-        print(f"Error occurred: {e}")
+
 
 # Main logic
 def main():
