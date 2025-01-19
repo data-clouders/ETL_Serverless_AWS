@@ -9,7 +9,6 @@ import datetime
 
 args = getResolvedOptions(sys.argv,
                             ['JOB_NAME',
-                            'key',
                             'INPUT_BUCKET',
                             'OUTPUT_BUCKET'])
 
@@ -46,11 +45,10 @@ def validate_and_write_parquet(glue_context, dynamic_frame, output_s3_path):
 
 
 def main():
-    timestamp  = datetime.fromtimestamp(args['key']).strftime('%Y-%m-%d')
-    
+    timestamp = datetime.now().strftime('%Y-%m-%d')    
     input_bucket_s3_usa = f"{args['INPUT_BUCKET']}Usa/datos_response_{timestamp}.json"
     input_bucket_s3_col = f"{args['INPUT_BUCKET']}Col/datos_response_{timestamp}.json"
-    
+
     output_bucket_s3_usa = f"{args['OUTPUT_BUCKET']}Usa/"
     output_bucket_s3_col = f"{args['OUTPUT_BUCKET']}Col/"
     
