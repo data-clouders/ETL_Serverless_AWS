@@ -46,7 +46,7 @@ Resources:
               "Type": "Task",
               "Resource": "arn:aws:states:::glue:startJobRun.sync",
               "Parameters": {
-                "JobName": "GlueTransform"
+                "JobName": "GlueTransform",
                 "Arguments": {
                   "--key": "$$.State.Enter.Timestamp",
                   "--INPUT_BUCKET": "s3://awdataclouders-s3-data-2/Raw/",
