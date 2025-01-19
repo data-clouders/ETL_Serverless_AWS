@@ -25,7 +25,7 @@ def lambda_handler(event, context):
             data = json.loads(response.data.decode('utf-8'))
             # Log the data (or process it as needed)
             # Generate a filename with timestamp
-            timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+            timestamp = datetime.now().strftime('%Y-%m-%d')
             file_name = f"datos_response_{timestamp}.json"
             
             # Save data to S3
@@ -35,7 +35,6 @@ def lambda_handler(event, context):
                 Body=json.dumps(data),
                 ContentType='application/json'
             )
-            
             # Return the data
             return {
                 'statusCode': 200
