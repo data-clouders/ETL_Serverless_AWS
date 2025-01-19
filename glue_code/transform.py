@@ -18,7 +18,7 @@ args = getResolvedOptions(sys.argv,
                             'OUTPUT_BUCKET'])
 
 # Create a SparkContext and GlueContext
-sc = SparkContext()
+sc = SparkContext.getOrCreate()
 glueContext = GlueContext(sc)
 spark = glueContext.spark_session
 
@@ -56,12 +56,12 @@ def validate_and_write_parquet(df, database_name, table_name, output_s3_path, sp
         spark.table(table_name)
         print(f"Table {table_name} exists. Overwriting the table.")
         # If table exists, overwrite it
-        df.write.format("parquet").mode("overwrite").saveAsTable(table_name)
+        df.write.option('path',output_s3_path).format("parquet").mode("overwrite").saveAsTable(f"{database_name}.{table_name}")
     except AnalysisException:
         print(f"Table {table_name} does not exist. Creating the table.")
         # If table doesn't exist, create the table
-        df.write.format("parquet").saveAsTable(table_name)
-    
+        
+        df.write.option('path',output_s3_path).format("parquet").saveAsTable(f"{database_name}.{table_name}")
 
 
 # Main logic
@@ -86,4 +86,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
