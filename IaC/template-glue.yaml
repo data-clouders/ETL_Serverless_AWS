@@ -33,7 +33,6 @@ Resources:
       Role: !Ref roleglue
       WorkerType: Standard
       NumberOfWorkers: 1
-      LogGroupName: !Ref GlueLogGroup
 
 
   rGlueJobDataQuality:
@@ -58,4 +57,3 @@ Resources:
         Role: !Ref roleglue
         WorkerType: Standard
         NumberOfWorkers: 1
-        LogGroupName: !Ref GlueLogGroup
