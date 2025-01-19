@@ -48,10 +48,11 @@ def validate_and_write_parquet(glue_context, dynamic_frame, output_s3_path):
 def main():
     timestamp  = datetime.fromtimestamp(args['key']).strftime('%Y-%m-%d')
     
-    input_bucket_s3_usa = f"{args['INPUT_BUCKET']}/Raw/Usa/datos_response_{timestamp}.json"
-    input_bucket_s3_col = f"{args['INPUT_BUCKET']}/Raw/Col/datos_response_{timestamp}.json"
-    output_bucket_s3_usa = f"{args['OUTPUT_BUCKET']}/Results/Usa/"
-    output_bucket_s3_col = f"{args['OUTPUT_BUCKET']}/Results/Col/"
+    input_bucket_s3_usa = f"{args['INPUT_BUCKET']}Usa/datos_response_{timestamp}.json"
+    input_bucket_s3_col = f"{args['INPUT_BUCKET']}Col/datos_response_{timestamp}.json"
+    
+    output_bucket_s3_usa = f"{args['OUTPUT_BUCKET']}Usa/"
+    output_bucket_s3_col = f"{args['OUTPUT_BUCKET']}Col/"
     
     dynamic_frame_raw_usa = read_json_from_s3(glue_context, input_bucket_s3_usa)
     dynamic_frame_raw_col = read_json_from_s3(glue_context, input_bucket_s3_col)
