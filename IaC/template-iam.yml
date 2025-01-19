@@ -132,7 +132,7 @@ Resources:
                   - logs:CreateLogStream
                   - logs:PutLogEvents
                 Resource: 
-                  - arn:aws:logs:*:*:log-group:/aws-glue/jobs/logs-v2:*
+                  - arn:aws:logs:*:*:log-group:/aws-glue/jobs/output:*
         - PolicyName: CloudWatchMetricData
           PolicyDocument:
             Version: 2012-10-17

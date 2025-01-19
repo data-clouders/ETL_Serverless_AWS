@@ -5,7 +5,11 @@ from pyspark.context import SparkContext
 from awsglue.context import GlueContext
 from awsglue.job import Job
 from pyspark.sql.functions import col, to_date
-import datetime
+from datetime import datetime
+
+current_datetime = datetime.now()
+print(current_datetime)
+
 
 args = getResolvedOptions(sys.argv,
                             ['JOB_NAME',

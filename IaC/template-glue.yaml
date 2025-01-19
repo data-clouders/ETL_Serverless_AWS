@@ -6,6 +6,11 @@ Parameters:
         Type: String
 
 Resources:
+  GlueLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: "/aws-glue/jobs/output"
+
   rGlueJobTransforma:
     Type: AWS::Glue::Job
     Properties:
@@ -28,6 +33,7 @@ Resources:
       Role: !Ref roleglue
       WorkerType: Standard
       NumberOfWorkers: 1
+      LogGroupName: !Ref GlueLogGroup
 
 
   rGlueJobDataQuality:
@@ -52,3 +58,4 @@ Resources:
         Role: !Ref roleglue
         WorkerType: Standard
         NumberOfWorkers: 1
+        LogGroupName: !Ref GlueLogGroup
