@@ -39,14 +39,32 @@ def read_json_from_s3(spark, s3_path):
         return None
 
 # Function to validate the DataFrame and write to Parquet
-def validate_and_write_parquet(df, output_s3_path):
-    if df is None or df.count() == 0:
-        print("DataFrame is empty. Skipping write operation.")
-        return
+def validate_and_write_parquet(df, database_name, table_name, output_s3_path, spark):
+
+    try:
+        # Check if the database exists using Spark SQL
+        databases = spark.sql("SHOW DATABASES")
+        try:
+            # If database doesn't exist, create it
+            print(f"Database {database_name} does not exist. Creating the database.")
+            spark.sql(f"CREATE DATABASE {database_name}")
+        except:
+            # Set the database to use
+            spark.sql(f"USE {database_name}")
+        
+        # Check if the table exists
+        try:
+            spark.table(table_name)
+            print(f"Table {table_name} exists. Overwriting the table.")
+            # If table exists, overwrite it
+            df.write.format("parquet").saveAsTable(table_name)
+        except AnalysisException:
+            print(f"Table {table_name} does not exist. Creating the table.")
+            # If table doesn't exist, create the table
+            df.write.format("parquet").mode("overwrite").saveAsTable(table_name)
     
-    # Write the DataFrame to Parquet format
-    df.write.parquet(output_s3_path, mode="overwrite")
-    print(f"Data written to {output_s3_path}")
+    except Exception as e:
+        print(f"Error occurred: {e}")
 
 # Main logic
 def main():
@@ -64,6 +82,9 @@ def main():
     df_col = read_json_from_s3(spark, input_s3_col)
 
     print(df_usa)
+
+    validate_and_write_parquet(df_usa, "database_usa", "table_usa", output_s3_usa, spark)
+    validate_and_write_parquet(df_col, "database_col", "table_col", output_s3_col, spark)
 
 if __name__ == "__main__":
     main()
