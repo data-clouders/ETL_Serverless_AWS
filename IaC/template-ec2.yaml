@@ -95,3 +95,4 @@ Resources:
                 cd /ETL_Serverless_AWS/superset
                 docker-compose up --build -d mysql
                 docker-compose up --build -d superset
+                docker exec -it superset superset init

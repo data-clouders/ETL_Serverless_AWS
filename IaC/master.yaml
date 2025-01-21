@@ -66,10 +66,10 @@ Resources:
             Parameters:
                 ArnStepFunction: !GetAtt step.Outputs.ArnStepFunction
                 RoleEvent: !GetAtt iam.Outputs.EventBridgeRolearn
-    ec2:
-        Type: "AWS::CloudFormation::Stack"
-        Properties:
-            TemplateURL: https://aw1289001-public-bucket.s3.us-east-1.amazonaws.com/template-ec2.yaml
+    #ec2:
+        #Type: "AWS::CloudFormation::Stack"
+        #Properties:
+            #TemplateURL: https://aw1289001-public-bucket.s3.us-east-1.amazonaws.com/template-ec2.yaml
 
 
 
