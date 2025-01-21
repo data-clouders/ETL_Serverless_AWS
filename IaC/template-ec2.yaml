@@ -1,0 +1,97 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: This cloud formation is to deploy ec2
+
+Resources:
+
+  rSecGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: EC2 security group
+      GroupName: sgsuperset
+      SecurityGroupEgress: 
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: "-1"
+      SecurityGroupIngress: 
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 8088
+          ToPort: 8088
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          CidrIp: 0.0.0.0/0        
+      VpcId: "vpc-03555e1ce11779839"
+
+
+  rRole: 
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Description: Role for instance profile
+      ManagedPolicyArns: 
+        - "arn:aws:iam::aws:policy/AdministratorAccess"
+      Path: /
+      RoleName: ec2superset
+
+
+
+  rInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: superset
+      Path: /
+      Roles: 
+        - !Ref rRole
+
+  rInstance:
+
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: "us-east-1a"
+      BlockDeviceMappings: 
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeSize: 50
+            DeleteOnTermination: true 
+        - DeviceName: /dev/sdf
+          Ebs:
+            VolumeSize: 120
+            DeleteOnTermination: true
+      IamInstanceProfile: !Ref rInstanceProfile
+      ImageId: ami-0df8c184d5f6ae949
+      InstanceType: t2.2xlarge
+      KeyName: demo
+      SecurityGroupIds: 
+        - !Ref rSecGroup
+      SubnetId: subnet-07082be90ed981fa9
+      UserData: 
+            Fn::Base64:
+              !Sub | 
+                #!/bin/bash
+                yum update -y
+                amazon-linux-extras enable docker
+                yum install -y docker
+                service docker start
+                systemctl enable docker
+                usermod -aG docker ec2-user
+                curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+                chmod +x /usr/local/bin/docker-compose
+                yum install -y git
+                yum install -y nano
+                git clone https://github.com/data-clouders/ETL_Serverless_AWS.git
+                cd /ETL_Serverless_AWS/superset
+                docker-compose up --build -d mysql
+                docker-compose up --build -d superset
