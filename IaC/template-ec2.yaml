@@ -46,8 +46,6 @@ Resources:
       Path: /
       RoleName: ec2superset
 
-
-
   rInstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
