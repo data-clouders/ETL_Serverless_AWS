@@ -21,11 +21,11 @@ args = getResolvedOptions(sys.argv,
 sc = SparkContext.getOrCreate()
 glueContext = GlueContext(sc)
 spark = glueContext.spark_session
+spark.conf.set("spark.sql.legacy.allowNonEmptyLocationInCTAS", "true")
 
 # Create a Glue Job instance
 job = Job(glueContext)
 job.init(args['JOB_NAME'], args)
-
 # Function to read JSON from S3 using PySpark
 def read_json_from_s3(spark, s3_path):
     try:
@@ -42,21 +42,20 @@ def read_json_from_s3(spark, s3_path):
 def validate_and_write_parquet(df, database_name, table_name, output_s3_path, spark):
 
     # Check if the database exists using Spark SQL
-    databases = spark.sql("SHOW DATABASES")
+    
     try:
-        # If database doesn't exist, create it
+        spark.sql(f"USE {database_name}")
+    except:
         print(f"Database {database_name} does not exist. Creating the database.")
         spark.sql(f"CREATE DATABASE {database_name}")
-    except:
-        # Set the database to use
-        spark.sql(f"USE {database_name}")
+        
         
     # Check if the table exists
     try:
         spark.table(table_name)
         print(f"Table {table_name} exists. Overwriting the table.")
         # If table exists, overwrite it
-        df.write.option('path',output_s3_path).format("parquet").mode("overwrite").saveAsTable(f"{database_name}.{table_name}")
+        df.option('path',output_s3_path).format("parquet").mode("overwrite").saveAsTable(f"{database_name}.{table_name}")
     except AnalysisException:
         print(f"Table {table_name} does not exist. Creating the table.")
         # If table doesn't exist, create the table
