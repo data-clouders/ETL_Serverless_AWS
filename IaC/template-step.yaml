@@ -63,8 +63,8 @@ Resources:
               "Parameters": {
                 "JobName": "GlueQuality",
                 "Arguments": {
-                  "--INPUT_BUCKET": "s3://awdataclouders-s3-data-2/Results/",
-                  "--OUTPUT_BUCKET": "s3://awdataclouders-s3-data-2/Staging/"
+                  "--INPUT_BUCKET": "s3://awdataclouders-s3-data-2/Staging/",
+                  "--OUTPUT_BUCKET": "s3://awdataclouders-s3-data-2/Results/"
                 }
               },
               "End": true
