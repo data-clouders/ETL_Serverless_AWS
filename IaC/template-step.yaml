@@ -52,7 +52,7 @@ Resources:
                 "JobName": "GlueTransform",
                 "Arguments": {
                   "--INPUT_BUCKET": "s3://awdataclouders-s3-data-2/Raw/",
-                  "--OUTPUT_BUCKET": "s3://awdataclouders-s3-data-2/Results/"
+                  "--OUTPUT_BUCKET": "s3://awdataclouders-s3-data-2/Staging/"
                 }
               },
               "Next": "GlueStartJobRunQuality"
@@ -61,7 +61,11 @@ Resources:
               "Type": "Task",
               "Resource": "arn:aws:states:::glue:startJobRun.sync",
               "Parameters": {
-                "JobName": "GlueQuality"
+                "JobName": "GlueQuality",
+                "Arguments": {
+                  "--INPUT_BUCKET": "s3://awdataclouders-s3-data-2/Results/",
+                  "--OUTPUT_BUCKET": "s3://awdataclouders-s3-data-2/Staging/"
+                }
               },
               "End": true
             }
