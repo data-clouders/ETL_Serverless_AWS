@@ -1,5 +1,6 @@
 import sys
 from pyspark.sql import SparkSession
+from pyspark.sql.functions import substring
 from pyspark.sql.functions import col, to_date, date_format, to_timestamp, udf, StringType, dayofmonth, month, year
 from datetime import datetime
 from pyspark.sql.utils import AnalysisException
