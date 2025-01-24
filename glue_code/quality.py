@@ -11,6 +11,7 @@ from awsglue.context import GlueContext
 from awsglue.job import Job
 from pyspark.sql.types import IntegerType, DateType, DoubleType, DecimalType
 
+
 # Parse command-line arguments
 args = getResolvedOptions(sys.argv,
                             ['JOB_NAME',
@@ -31,8 +32,8 @@ job.init(args['JOB_NAME'], args)
 def convert_date_columns(df, columns_to_cast):
     
     for col_name in columns_to_cast:
-      df = df.withColumn(col_name, substring(df[col_name], 1, 10))
-      df = df.withColumn(col_name, df[f"{col_name}"].cast(DateType()))
+        df = df.withColumn(col_name, substring(df[col_name], 1, 10))
+        df = df.withColumn(col_name, df[f"{col_name}"].cast(DateType()))
     return df
 
 
@@ -49,9 +50,7 @@ def drop_columns(df, columns_to_drop):
 
 
 def validate_and_write_parquet(df, database_name, table_name, output_s3_path, spark):
-
-    # Check if the database exists using Spark SQL
-    
+    # Check if the db exists
     try:
         spark.sql(f"USE {database_name}")
     except:
@@ -65,17 +64,19 @@ def validate_and_write_parquet(df, database_name, table_name, output_s3_path, sp
         print(f"Table {table_name} exists. Overwriting the table.")
         # If table exists, overwrite it
         df.write.option('path',output_s3_path).format("parquet").mode("overwrite").saveAsTable(f"{database_name}.{table_name}")
+
     except AnalysisException:
         print(f"Table {table_name} does not exist. Creating the table.")
-        # If table doesn't exist, create the table
-        
         df.write.option('path',output_s3_path).format("parquet").saveAsTable(f"{database_name}.{table_name}")
+
+
 def get_part_date(df,column_date):
     for column in column_date:
-      df = df.withColumn(f"day_{column}", dayofmonth(df[f"{column}"])) \
-        .withColumn(f"month_{column}", month(df[f"{column}"])) \
-        .withColumn(f"year_{column}", year(df[f"{column}"]))
+        df = df.withColumn(f"day_{column}", dayofmonth(df[f"{column}"])) \
+            .withColumn(f"month_{column}", month(df[f"{column}"])) \
+            .withColumn(f"year_{column}", year(df[f"{column}"]))
     return df
+
 
 def main():
     
