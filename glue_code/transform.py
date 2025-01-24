@@ -55,7 +55,7 @@ def validate_and_write_parquet(df, database_name, table_name, output_s3_path, sp
         spark.table(table_name)
         print(f"Table {table_name} exists. Overwriting the table.")
         # If table exists, overwrite it
-        df.option('path',output_s3_path).format("parquet").mode("overwrite").saveAsTable(f"{database_name}.{table_name}")
+        df.write.option('path',output_s3_path).format("parquet").mode("overwrite").saveAsTable(f"{database_name}.{table_name}")
     except AnalysisException:
         print(f"Table {table_name} does not exist. Creating the table.")
         # If table doesn't exist, create the table
