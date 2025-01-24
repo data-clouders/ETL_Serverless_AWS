@@ -43,7 +43,7 @@ def convert_numbers_columns(df, columns_to_cast):
     return df
 
 
-def drop_columns(df: DataFrame, columns_to_drop: list) -> DataFrame:
+def drop_columns(df, columns_to_drop):
     return df.drop(*columns_to_drop)
 
 
