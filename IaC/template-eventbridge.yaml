@@ -18,5 +18,3 @@ Resources:
       Target:
         Arn: !Ref ArnStepFunction
         RoleArn: !Ref RoleEvent
-          
-

@@ -34,7 +34,6 @@ Resources:
       WorkerType: Standard
       NumberOfWorkers: 1
 
-
   rGlueJobDataQuality:
       Type: AWS::Glue::Job
       Properties:
