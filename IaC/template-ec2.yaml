@@ -25,7 +25,7 @@ Resources:
           FromPort: 3306
           ToPort: 3306
           CidrIp: 0.0.0.0/0        
-      VpcId: #Add vpc Id
+      VpcId: vpc-03555e1ce11779839
 
 
   rRole: 
@@ -74,7 +74,7 @@ Resources:
       KeyName: demo
       SecurityGroupIds: 
         - !Ref rSecGroup
-      SubnetId: # Add Id for subnet
+      SubnetId: subnet-07082be90ed981fa9
       UserData: 
             Fn::Base64:
               !Sub | 
